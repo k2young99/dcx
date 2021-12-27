@@ -5,17 +5,41 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render=6Le-q6kUAAAAAFPDTU6lct7ZRRN7vK55hVF4Icp3"></script>
+    <!-- api.js 뒤에 render= 에 비밀키 말고 사이트키 넣는다.-->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeJz7kdAAAAAFRuecMeB9jZ-rXkc2Zl7S3To45x"></script>
 </head>
-<script>
-
-</script>
 
 <body>
-
 구글 캡챠 가이드 :
 <a text="ddd" href="https://scorpio-mercury.tistory.com/24">여기 들어가서 따라하시면 됩니다.</a>
 <p th:text='${recaptcha}'></p>
+<script>
 
+    let key ={
+        siteKey:'6LeJz7kdAAAAAFRuecMeB9jZ-rXkc2Zl7S3To45x'
+    }
+
+$(document).ready(function (){
+    grecaptcha.ready(function(){
+
+        grecaptcha.execute(key.siteKey, {action: 'login'}).then(function(token) {
+            console.log(token)
+            $.ajax({
+                // url: '${pageContext.servletContext.contextPath}/robot/token',
+                url: 'recaptcha',
+                type : 'POST',
+                dataType: 'json',
+                data : {'token': token},
+                success : function(result){
+                    console.log(result);
+                },
+                fail: function(e){
+                    console.log("fail")
+                }
+            });// end ajax
+        });
+    })
+});
+</script>
 </body>
 </html>
